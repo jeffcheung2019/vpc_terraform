@@ -7,6 +7,13 @@ terraform {
       version = ">= 3.73"
     }
   }
+  
+  backend "remote" {
+    organization = "jeffcheung2019"
+    workspaces {
+      name = "vpc_terraform"
+    }
+  }
 }
 
 provider "aws" {
