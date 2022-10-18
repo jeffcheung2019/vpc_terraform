@@ -25,7 +25,11 @@ module "vpc" {
   enable_nat_gateway = false
 
   public_subnet_tags = {
-    Name = "public"
+    Name = ["public-b", "public-c"]
+  }
+
+  private_subnet_tags = {
+    Name = ["private-b", "private-c"]
   }
 
   tags = local.tags
