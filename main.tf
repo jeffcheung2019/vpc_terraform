@@ -53,8 +53,6 @@ module "bastion_host_sg" {
       protocol = "all"
       description = "All traffic"
       cidr_blocks = "0.0.0.0/0"
-      from_port = "all"
-      to_port = "all"
     }
   ]
 }
