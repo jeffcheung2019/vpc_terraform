@@ -62,7 +62,7 @@ module "ec2_instance" {
 
   name = local.ec2_name
 
-  ami                    = "ami-01a58f13cf8dc9f55"
+  ami                    = "ami-024527629f55e9322"
   instance_type          = "t2.micro"
   key_name               = "bastion_user_key"
   monitoring             = false
