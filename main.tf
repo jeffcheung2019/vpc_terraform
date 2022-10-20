@@ -37,6 +37,7 @@ module "bastion_host_sg" {
   description = "Bastion host security group"
   vpc_id      = "${module.vpc.vpc_id}"
 
+  ingress_cidr_blocks      = ["0.0.0.0/0"]
   ingress_rules            = ["ssh-22-tcp"]
   ingress_with_cidr_blocks = [
     {
@@ -45,14 +46,16 @@ module "bastion_host_sg" {
       cidr_blocks = "0.0.0.0/0"
       from_port = 22
       to_port = 22
+      rule = "ingress ssh sg rule"
     }
   ]
-  egress_rules = ["all traffic"]
+  egress_rules = ["all-traffic"]
   egress_with_cidr_blocks = [
     {
       protocol = "all"
       description = "All traffic"
       cidr_blocks = "0.0.0.0/0"
+      rule = "egress all traffic sg rule"
     }
   ]
 }
