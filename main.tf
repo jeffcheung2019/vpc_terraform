@@ -62,8 +62,8 @@ module "ec2_instance" {
 
   name = local.ec2_name
 
-  ami                    = "ami-0e67505f183e5ab60"
-  instance_type          = "t1.micro"
+  ami                    = "ami-01a58f13cf8dc9f55"
+  instance_type          = "t2.micro"
   key_name               = "bastion_user_key"
   monitoring             = false
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
