@@ -56,21 +56,21 @@ resource "aws_security_group" "allow_ssh" {
   }
 }
 
-# module "ec2_instance" {
-#   source  = "terraform-aws-modules/ec2-instance/aws"
-#   version = "~> 3.0"
+module "ec2_instance" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "~> 3.0"
 
-#   name = local.ec2_name
+  name = local.ec2_name
 
-#   ami                    = "ami-00f7e5c52c0f43726"
-#   instance_type          = "t3.nano"
-#   key_name               = "bastion_user_key"
-#   monitoring             = false
-#   vpc_security_group_ids = ["sg-12345678"]
-#   subnet_id              = "subnet-eddcdzz4"
-
-#   tags = {
-#     Terraform   = "true"
-#     Environment = "dev"
-#   }
-# }
+  ami                    = "ami-00f7e5c52c0f43726"
+  instance_type          = "t1.micro"
+  key_name               = "bastion_user_key"
+  monitoring             = false
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+  subnet_id              = tolist(module.bastion_vpc.public_subnets)[0]
+  
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
