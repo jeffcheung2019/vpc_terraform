@@ -4,7 +4,7 @@ locals {
   region = "us-west-1"
 }
 
-module "vpc" {
+module "bastion_vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   name = local.vpc_name
@@ -31,33 +31,29 @@ module "vpc" {
   
 }
 
-module "bastion_host_sg" {
-  source = "terraform-aws-modules/security-group/aws"
-  name        = "bastion-host-sg"
-  description = "Bastion host security group"
-  vpc_id      = "${module.vpc.vpc_id}"
+resource "aws_security_group" "allow_ssh" {
+  name        = "allow_ssh"
+  description = "Allow SSH inbound traffic"
+  vpc_id      = "${module.bastion_vpc.vpc_id}"
 
-  ingress_cidr_blocks      = ["0.0.0.0/0"]
-  ingress_rules            = ["ssh-22-tcp"]
-  ingress_with_cidr_blocks = [
-    {
-      protocol    = "tcp"
-      description = "SSH TCP port"
-      cidr_blocks = "0.0.0.0/0"
-      from_port = 22
-      to_port = 22
-      rule = "ingress ssh sg rule"
-    }
-  ]
-  egress_rules = ["all-traffic"]
-  egress_with_cidr_blocks = [
-    {
-      protocol = "all"
-      description = "All traffic"
-      cidr_blocks = "0.0.0.0/0"
-      rule = "egress all traffic sg rule"
-    }
-  ]
+  ingress {
+    description      = "SSH ingress"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["${module.bastion_vpc.vpc_cidr_block}"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_ssh"
+  }
 }
 
 # module "ec2_instance" {
