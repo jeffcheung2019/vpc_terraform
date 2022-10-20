@@ -62,13 +62,13 @@ module "ec2_instance" {
 
   name = local.ec2_name
 
-  ami                    = "ami-00f7e5c52c0f43726"
+  ami                    = "ami-0e67505f183e5ab60"
   instance_type          = "t1.micro"
   key_name               = "bastion_user_key"
   monitoring             = false
   vpc_security_group_ids = [aws_security_group.allow_ssh.id]
   subnet_id              = tolist(module.bastion_vpc.public_subnets)[0]
-  
+
   tags = {
     Terraform   = "true"
     Environment = "dev"
